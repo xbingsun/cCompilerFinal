@@ -1,0 +1,11 @@
+{
+  "files.associations": {
+    "emmet.triggerExpansionOnTab": true,
+    "files.associations": {
+      "*.js": "html"
+    },
+    "vector": "cpp",
+    "xstring": "cpp",
+    "xtree": "cpp"
+  }
+}
