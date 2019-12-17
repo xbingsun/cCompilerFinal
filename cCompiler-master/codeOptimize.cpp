@@ -33,8 +33,13 @@ void Optimize::establishMap(vector<string>& codelist) {
 		int w = str.find("temp", begin);
 		//string:npos是个特殊值，代表查找没有匹配
 		while (w != string::npos) {
-
-			int end = str.find(",", w);
+			int end = str.find(";", w);
+			if (end == string::npos) {
+					end = str.find("}", w);
+			}
+			if (end == string::npos) {
+					end = str.find(",", w);
+			}
 			if (end == string::npos) {
 					end = str.find(")", w);
 			}

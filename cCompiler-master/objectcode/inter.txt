@@ -1,48 +1,44 @@
-FUNCTION fact :
-PARAM var0
-temp0 := #1
-IF var0 == temp0 GOTO label0
-GOTO label1
+(FUNCTION, fact, {var0}, _)
+(=, #1, _, temp0)
+(j==, var0, temp0, label0)
+(j, _, _, label1)
 LABEL label0 :
-RETURN var0
-GOTO label2
+(RETURN, _, _, var0)
+(j, _, _, label2)
 LABEL label1 :
-temp2 := #1
-temp3 := var0 - temp2
-ARG temp3
-temp4 := CALL fact
-temp5 := var0 * temp4
-var1 := temp5
-RETURN var1
+(=, #1, _, temp2)
+(-, var0, temp2, temp3)
+(CALL, fact, {temp3}, temp4)
+(*, var0, temp4, temp5)
+(=, temp5, _, var1)
+(RETURN, _, _, var1)
 LABEL label2 :
-FUNCTION main :
-temp6 := CALL read
-var3 := temp6
-temp7 := #0
-var4 := temp7
+(FUNCTION, main, {}, _)
+(CALL, read, {}, temp6)
+(=, temp6, _, var3)
+(=, #0, _, temp7)
+(=, temp7, _, var4)
 LABEL label3 :
-IF var4 < var3 GOTO label4
-GOTO label5
+(j<, var4, var3, label4)
+(j, _, _, label5)
 LABEL label4 :
-temp9 := CALL read
-var5 := temp9
-temp10 := #1
-IF var5 > temp10 GOTO label6
-GOTO label7
+(CALL, read, {}, temp9)
+(=, temp9, _, var5)
+(=, #1, _, temp10)
+(j>, var5, temp10, label6)
+(j, _, _, label7)
 LABEL label6 :
-ARG var5
-temp12 := CALL fact
-var2 := temp12
-GOTO label8
+(CALL, fact, {var5}, temp12)
+(=, temp12, _, var2)
+(j, _, _, label8)
 LABEL label7 :
-temp13 := #1
-var2 := temp13
+(=, #1, _, temp13)
+(=, temp13, _, var2)
 LABEL label8 :
-ARG var2
-CALL print
-temp15 := #1
-var4 := var4 + temp15
-GOTO label3
+(CALL, print, {var2}, _)
+(=, #1, _, temp15)
+(+, var4, temp15, var4)
+(j, _, _, label3)
 LABEL label5 :
-temp16 := #0
-RETURN temp16
+(=, #0, _, temp16)
+(RETURN, _, _, temp16)
