@@ -600,11 +600,13 @@ struct gramTree* Praser::praser_function_definition(struct gramTree* node) {
     blockStack.push_back(funBlock);
     funcPool.insert({funcName,funBlock.func});
 
-    innerCode.addCode("FUNCTION " + funcName + " :");
+    //innerCode.addCode("FUNCTION " + funcName + " :");
 
     //获取函数形参列表
+    string param_list = "";
     if(declarator->left->right->right->name == "parameter_list")
-        praser_parameter_list(declarator->left->right->right, funcName,true);
+        param_list = praser_parameter_list(declarator->left->right->right, funcName,true);
+    innerCode.addCode("(FUNCTION, "+funcName+", "+"{"+param_list+"}, _)");
 
     //此时函数池中的func已经添加了参数列表
     funcNode func = funcPool[funcName];
@@ -634,21 +636,23 @@ struct gramTree* Praser::praser_function_definition(struct gramTree* node) {
 }
 
 //获取函数形参列表，函数定义需要获取形参，声明则不需要
-void Praser::praser_parameter_list(struct gramTree* node,string funcName,bool definite) {
+string Praser::praser_parameter_list(struct gramTree* node,string funcName,bool definite) {
+    string result="";
     if (node->left->name == "parameter_list") {
-        praser_parameter_list(node->left, funcName,definite);
+        result+=praser_parameter_list(node->left, funcName,definite);
     }
     else if (node->left->name == "parameter_declaration") {
-        praser_parameter_declaration(node->left,funcName,definite);
+        result+=praser_parameter_declaration(node->left,funcName,definite);
     }
 
     if (node->right->name == ",") {
-        praser_parameter_declaration(node->right->right, funcName,definite);
+        result+=", "+praser_parameter_declaration(node->right->right, funcName,definite);
     }
+    return result;
 }
 
 //获取单个形参内容,函数定义需要获取形参，声明则不需要
-void Praser::praser_parameter_declaration(struct gramTree* node, string funcName,bool definite) {
+string Praser::praser_parameter_declaration(struct gramTree* node, string funcName,bool definite) {
     //cout << "praser_parameter_declaration" << endl;
     gramTree* type_specifier = node->left;
     gramTree* declarator = node->left->right;
@@ -671,9 +675,11 @@ void Praser::praser_parameter_declaration(struct gramTree* node, string funcName
     
     //将函数的形参添加到当前块的变量池中
     blockStack.back().varMap.insert({varName,newnode});
-
-    if(definite)
-        innerCode.addCode(innerCode.createCodeforParameter(newnode));
+    string arg;
+    if(definite){
+        arg = innerCode.createCodeforParameter(newnode);
+    }
+    return arg;
 }
 
 
@@ -812,7 +818,8 @@ void Praser::praser_init_declarator(string vartype, struct gramTree* node) {
                 anode.name = arrayName;
                 anode.type = arrayType;
                 anode.num = innerCode.arrayNum++;
-                innerCode.addCode("DEC " + innerCode.getarrayNodeName(anode) + " " + tnode.name);
+                //innerCode.addCode("DEC " + innerCode.getarrayNodeName(anode) + " " + tnode.name);
+                innerCode.addCode("(DEC, "+tnode.name+", _, "+innerCode.getarrayNodeName(anode)+")");
 
                 blockStack.back().arrayMap.insert({ arrayName,anode });
             }
@@ -1431,20 +1438,18 @@ varNode Praser::praser_postfix_expression(struct gramTree* post_exp) {
       error(post_exp->left->left->left->line, "Undefined function " + funcName);
     }
 
-
+    string arg;
     if (post_exp->left->right->right->name == "argument_expression_list") {
       gramTree* argument_exp_list = post_exp->left->right->right;
-      praser_argument_expression_list(argument_exp_list, funcName);
+      arg = praser_argument_expression_list(argument_exp_list, funcName);
       //cout << "funcCall" << endl;
-
-
     }
 
 
     funcNode func = funcPool[funcName];
     
     if (func.rtype == "void") {
-      innerCode.addCode("CALL " + funcName);
+      innerCode.addCode("(CALL, "+funcName+ ", {" +arg+ "}, _)");
     }
     else {
       string tempname = "temp" + inttostr(innerCode.tempNum);
@@ -1452,7 +1457,7 @@ varNode Praser::praser_postfix_expression(struct gramTree* post_exp) {
 
 
       newNode = createTempVar(tempname, funcPool[funcName].rtype);
-      innerCode.addCode(tempname + " := CALL " + funcName);
+      innerCode.addCode("(CALL, "+funcName+ ", {" +arg+ "}, "+tempname+")");
 
 
     }
@@ -1547,15 +1552,16 @@ varNode Praser::praser_postfix_expression(struct gramTree* post_exp) {
     return newnode;
   }
 }
-void Praser::praser_argument_expression_list(struct gramTree* node, string funcName) {
+string Praser::praser_argument_expression_list(struct gramTree* node, string funcName) {
     gramTree* argu_exp_list = node->left;
     funcNode func = funcPool[funcName];
     int i = 0;
+    string result = "";
     while (argu_exp_list->name == "argument_expression_list") {
         varNode rnode = praser_assignment_expression(argu_exp_list->right->right);
 
-        innerCode.addCode(innerCode.createCodeforArgument(rnode));
-
+        //innerCode.addCode(innerCode.createCodeforArgument(rnode));
+        result += innerCode.createCodeforArgument(rnode)+", ";
         argu_exp_list = argu_exp_list->left;
         i++;
         if (func.paralist[func.paralist.size() - i].type != rnode.type) {
@@ -1563,7 +1569,8 @@ void Praser::praser_argument_expression_list(struct gramTree* node, string funcN
         }
     }
     varNode rnode = praser_assignment_expression(argu_exp_list);
-    innerCode.addCode(innerCode.createCodeforArgument(rnode));
+    //innerCode.addCode(innerCode.createCodeforArgument(rnode));
+    result += innerCode.createCodeforArgument(rnode);
     i++;
     if (func.paralist[func.paralist.size() - i].type != rnode.type) {
         error(argu_exp_list->line, "Wrong type arguments to function " + funcName);
@@ -1571,6 +1578,7 @@ void Praser::praser_argument_expression_list(struct gramTree* node, string funcN
     if (i != func.paralist.size()) {
         error(argu_exp_list->line, "The number of arguments doesn't equal to the function parameters number.");
     }
+    return result;
 }
 
 varNode Praser::praser_primary_expression(struct gramTree* primary_exp) {

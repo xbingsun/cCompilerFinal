@@ -1,9 +1,9 @@
-int fact(int n){
+int fact(int n, int m){
 	int temp;
     if(n==1)
         return n;
     else{
-    	temp=(n*fact(n-1));
+    	temp=(n*fact(n-1,n-1));
     	return temp;
     }
 }
@@ -17,7 +17,7 @@ int main()
     for(int i=0;i<times;i++){
     	int m = read();
     	if( m > 1) {
-        	result=fact(m);
+        	result=fact(m,m);
         }
         else {
             result = 1;

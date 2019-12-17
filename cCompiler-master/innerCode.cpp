@@ -76,13 +76,14 @@ string InnerCode::createCodeforAssign(varNode node1, varNode node2) {
 }
 
 string InnerCode::createCodeforParameter(varNode node) {
-    string result = "PARAM ";
+    //string result = "PARAM ";
+    string result = "";
     result += "var" + inttostr(node.num);
     return result;
 }
 
 string InnerCode::createCodeforReturn(varNode node) {
-    string result = "RETURN ";
+    string result = "(RETURN, _, _, ";
     if (node.useAddress) {
         result += "*" + node.name;
     }
@@ -92,12 +93,12 @@ string InnerCode::createCodeforReturn(varNode node) {
         }
         else result += "var" + inttostr(node.num);
     }
-    
+    result+= ")";
     return result;
 }
 
 string InnerCode::createCodeforArgument(varNode node) {
-    string result = "ARG ";
+    string result = "";
     if (node.useAddress) {
         result += "*" + node.name;
     } 
