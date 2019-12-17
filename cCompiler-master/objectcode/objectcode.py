@@ -17,9 +17,11 @@ def Load_Inter(filename):
     lines=[]
     for line in open(filename,'r',encoding='utf-8'):
         line=line.replace('\r','').replace('\n','')
+        print(line)
         if line =='':
             continue
         lines.append(line.split(' '))
+        print(lines)
     return lines
 
 def Get_R(string):

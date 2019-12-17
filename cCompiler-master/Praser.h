@@ -12,13 +12,13 @@ using namespace std;
 class Praser {
 public:
 
-	Praser(gramTree*);	//¹¹Ôìº¯Êý
-	~Praser();	//Îö¹¹º¯Êý
+	Praser(gramTree*);	//ï¿½ï¿½ï¿½ìº¯ï¿½ï¿½
+	~Praser();	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 private:
-	map<string, funcNode> funcPool;			//º¯Êý³Ø
-	vector<Block> blockStack;				//Î¬»¤µÄÕ»
-	InnerCode innerCode;					//ÖÐ¼ä´úÂëÉú³É¹¤¾ß
+	map<string, funcNode> funcPool;			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	vector<Block> blockStack;				//Î¬ï¿½ï¿½ï¿½ï¿½Õ»
+	InnerCode innerCode;					//ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½
 	//set<string> build_in_function;
 
 	struct gramTree* root;
@@ -27,29 +27,29 @@ private:
 	void praserGramTree(struct gramTree* node);
 
 	
-	struct gramTree* praser_declaration(struct gramTree* node);		//·ÖÎöpraser_declarationµÄ½Úµã
+	struct gramTree* praser_declaration(struct gramTree* node);		//ï¿½ï¿½ï¿½ï¿½praser_declarationï¿½Ä½Úµï¿½
 	void praser_init_declarator_list(string, struct gramTree*);
-	void praser_init_declarator(string, struct gramTree* );			//·ÖÎöpraser_init_declaratorµÄ½Úµã
+	void praser_init_declarator(string, struct gramTree* );			//ï¿½ï¿½ï¿½ï¿½praser_init_declaratorï¿½Ä½Úµï¿½
 
 	struct gramTree* praser_function_definition(struct gramTree*);
-	void praser_parameter_list(struct gramTree*,string,bool);			//»ñÈ¡º¯ÊýÐÎ²ÎÁÐ±í
-	void praser_parameter_declaration(struct gramTree*, string,bool);	//»ñÈ¡º¯Êýµ¥¸öÐÎ²Î
+	string praser_parameter_list(struct gramTree*,string,bool);			//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Î²ï¿½ï¿½Ð±ï¿½
+	string praser_parameter_declaration(struct gramTree*, string,bool);	//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î²ï¿½
 
 	struct gramTree* praser_statement(struct gramTree*);
 
 	void praser_expression_statement(struct gramTree*);
 	varNode praser_expression(struct gramTree*);
 
-	void praser_argument_expression_list(struct gramTree*,string);
+	string praser_argument_expression_list(struct gramTree*,string);
 
 	void praser_jump_statement(struct gramTree*);
 	void praser_compound_statement(struct gramTree*);
 	void praser_selection_statement(struct gramTree*);
 	void praser_iteration_statement(struct gramTree*);
 
-	varNode praser_assignment_expression(struct gramTree*);			//¸³Öµ±í´ïÊ½
-	varNode praser_logical_or_expression(struct gramTree*);			//Âß¼­»ò±í´ïÊ½
-	varNode praser_logical_and_expression(struct gramTree*);		//Âß¼­»ò±í´ïÊ½
+	varNode praser_assignment_expression(struct gramTree*);			//ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½Ê½
+	varNode praser_logical_or_expression(struct gramTree*);			//ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½
+	varNode praser_logical_and_expression(struct gramTree*);		//ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½
 	varNode praser_inclusive_or_expression(struct gramTree*);
 	varNode praser_exclusive_or_expression(struct gramTree*);
 	varNode praser_and_expression(struct gramTree*);
@@ -63,9 +63,9 @@ private:
 	varNode praser_primary_expression(struct gramTree*);
 
 
-	string lookupVar(string name);			//·µ»Ø±äÁ¿ÀàÐÍ£¬ÕÒ²»µ½·µ»Ø""
-	bool lookupCurruntVar(string name);		//²éÕÒµ±Ç°¿éµÄvar
-	struct varNode lookupNode(string name);	//·µ»Ø±äÁ¿½Úµã
+	string lookupVar(string name);			//ï¿½ï¿½ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½""
+	bool lookupCurruntVar(string name);		//ï¿½ï¿½ï¿½Òµï¿½Ç°ï¿½ï¿½ï¿½var
+	struct varNode lookupNode(string name);	//ï¿½ï¿½ï¿½Ø±ï¿½ï¿½ï¿½ï¿½Úµï¿½
 	string getFuncRType();
 	string getArrayType(string);
 	struct arrayNode getArrayNode(string);
