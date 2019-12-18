@@ -19,13 +19,13 @@ LABEL label2 :
 (=, #0, _, temp7)
 (=, temp7, _, var4)
 LABEL label3 :
-(j<, var4, var3, label4)
+(j!=, var4, var3, label4)
 (j, _, _, label5)
 LABEL label4 :
 (CALL, read, {}, temp9)
 (=, temp9, _, var5)
 (=, #1, _, temp10)
-(j>, var5, temp10, label6)
+(j!=, var5, temp10, label6)
 (j, _, _, label7)
 LABEL label6 :
 (CALL, fact, {var5}, temp12)
