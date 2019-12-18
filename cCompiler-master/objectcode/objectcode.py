@@ -82,7 +82,16 @@ def translate(line):
     elif line[0] == '<':
         return '\tslt %s,%s,%s' % (Get_R(line[3]), Get_R(line[1]), Get_R(line[2]))
     elif line[0] == '>':
-        return '\tslt %s,%s,%s' % (Get_R(line[3]), Get_R(line[1]), Get_R(line[2]))
+        return '\tsgt %s,%s,%s' % (Get_R(line[3]), Get_R(line[1]), Get_R(line[2]))
+
+    elif line[0] == '&&' and line[3][0] == 't':
+        return '\tand %s,%s,%s' % (Get_R(line[3]), Get_R(line[1]), Get_R(line[2]))
+    elif line[0] == '||' and line[3][0] == 't':
+        return '\tor %s,%s,%s' % (Get_R(line[3]), Get_R(line[1]), Get_R(line[2]))
+    elif line[0] == '&&' and line[3][0] == 'l':   #&& || 跳转如何处理
+        return '\tadd {4},{1},{0}\n\tli {3},2\n\tbeq {4},{3},{2}' .format(Get_R(line[1]), Get_R(line[2]), line[3], Get_R("2"), Get_R("tempand"))
+    elif line[0] == '||' and line[3][0] == 'l':
+        return '\tadd {4},{1},{0}\n\tli {3},0\n\tbgt {4},{3},{2}' .format(Get_R(line[1]), Get_R(line[2]), line[3], Get_R("0"), Get_R("tempor"))
 
     if line[0] == 'CALL' and line[3] != '_': #函数调用并赋给变量
         res = ''
