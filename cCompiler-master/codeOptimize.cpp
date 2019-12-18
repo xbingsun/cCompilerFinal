@@ -63,9 +63,6 @@ void Optimize::establishMap(vector<string>& codelist) {
 			}
 			begin = end;
 			w = str.find("temp", begin);
-
-
-
 		}
 	}
 }

@@ -156,7 +156,7 @@ void Praser::praser_selection_statement(struct gramTree* node) {
             string label2 = innerCode.getLabelName();
 
             if (exp_rnode.type == "bool") {
-                innerCode.addCode("(" + exp_rnode.boolString + label1+")");
+                innerCode.addCode("(" + exp_rnode.boolString + ", " + label1+")");
             }
             else {
                 string tempzeroname = "temp" + inttostr(innerCode.tempNum);
@@ -164,7 +164,7 @@ void Praser::praser_selection_statement(struct gramTree* node) {
                 varNode newznode = createTempVar(tempzeroname, "int");
                 innerCode.addCode("(=, #0, _, "+tempzeroname+")");//"(=, #0, _, "+tempzeroname+")"
 
-                innerCode.addCode("(!=, " + innerCode.getNodeName(exp_rnode) + " , " + tempzeroname + ", " + label1+")");
+                innerCode.addCode("(j!=, " + innerCode.getNodeName(exp_rnode) + " , " + tempzeroname + ", " + label1+")");
             }
             
             innerCode.addCode("(j, _, _, " + label2 + ")");//"(j, _, _," + label2 + ")"
@@ -202,7 +202,7 @@ void Praser::praser_selection_statement(struct gramTree* node) {
                 varNode newznode = createTempVar(tempzeroname, "int");
                 innerCode.addCode("(=, #0, _, "+tempzeroname+")");
 
-                innerCode.addCode("(!=, " + innerCode.getNodeName(exp_rnode) + ", " + tempzeroname + ", " + label1+")");
+                innerCode.addCode("(j!=, " + innerCode.getNodeName(exp_rnode) + ", " + tempzeroname + ", " + label1+")");
             }
 
             innerCode.addCode("(j, _, _, " + label2 + ")");//"(j, _, _," + label2 + ")"
@@ -266,7 +266,7 @@ void Praser::praser_iteration_statement(struct gramTree* node) {
             varNode newznode = createTempVar(tempzeroname, "int");
             innerCode.addCode("(=, "+tempzeroname+", _, #0)");//"(=, "+tempzeroname+", _, #0)"
 
-            innerCode.addCode("(!=, " + innerCode.getNodeName(var) + ", " + tempzeroname + ", " + label2+")");
+            innerCode.addCode("(j!=, " + innerCode.getNodeName(var) + ", " + tempzeroname + ", " + label2+")");
         }
         innerCode.addCode("(j, _, _, " + label3 + ")");
         innerCode.addCode("LABEL " + label2 + " :");
@@ -309,7 +309,7 @@ void Praser::praser_iteration_statement(struct gramTree* node) {
             varNode newznode = createTempVar(tempzeroname, "int");
             innerCode.addCode("(=, "+tempzeroname+", _, #0)");
 
-            innerCode.addCode("(!=, " + innerCode.getNodeName(var) + ", " + tempzeroname + ", " + label1+")");
+            innerCode.addCode("(j!=, " + innerCode.getNodeName(var) + ", " + tempzeroname + ", " + label1+")");
         }
 
         /*innerCode.addCode("GOTO " + label1);*/
@@ -353,9 +353,9 @@ void Praser::praser_iteration_statement(struct gramTree* node) {
                         string tempzeroname = "temp" + inttostr(innerCode.tempNum);
                         ++innerCode.tempNum;
                         varNode newznode = createTempVar(tempzeroname, "int");
-                        innerCode.addCode("(=, "+tempzeroname+", _, #0)");
+                        innerCode.addCode("(=, #0, _, "+tempzeroname + ")");
 
-                        innerCode.addCode("(!=, " + innerCode.getNodeName(var) + ", " + tempzeroname + ", " + label2+")");
+                        innerCode.addCode("(j!=, " + innerCode.getNodeName(var) + ", " + tempzeroname + ", " + label2+")");
                     }
                 }
                 else {
@@ -414,7 +414,7 @@ void Praser::praser_iteration_statement(struct gramTree* node) {
                         varNode newznode = createTempVar(tempzeroname, "int");
                         innerCode.addCode("(=, "+tempzeroname+", _, #0)");
 
-                        innerCode.addCode("(!=, " + innerCode.getNodeName(var) + ", " + tempzeroname + ", " + label2+")");
+                        innerCode.addCode("(j!=, " + innerCode.getNodeName(var) + ", " + tempzeroname + ", " + label2+")");
                     }
                 }
                 else {
@@ -475,7 +475,7 @@ void Praser::praser_iteration_statement(struct gramTree* node) {
                         varNode newznode = createTempVar(tempzeroname, "int");
                         innerCode.addCode("(=, "+tempzeroname+", _, #0)");
 
-                        innerCode.addCode("(!=, " + innerCode.getNodeName(var) + ", " + tempzeroname + ", " + label2+")");
+                        innerCode.addCode("(j!=, " + innerCode.getNodeName(var) + ", " + tempzeroname + ", " + label2+")");
                     }
                 }
                 else {
@@ -533,7 +533,7 @@ void Praser::praser_iteration_statement(struct gramTree* node) {
                         varNode newznode = createTempVar(tempzeroname, "int");
                         innerCode.addCode("(=, "+tempzeroname+", _, #0)");
 
-                        innerCode.addCode("(!=, " + innerCode.getNodeName(var) + ", " + tempzeroname + ", " + label2+")");
+                        innerCode.addCode("(j!=, " + innerCode.getNodeName(var) + ", " + tempzeroname + ", " + label2+")");
                     }
                 }
                 else {

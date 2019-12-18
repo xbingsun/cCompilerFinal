@@ -16,7 +16,6 @@ void InnerCode::printCode() {
     Optimize optimize(codeList);
     codeList = optimize.getCodeList();
     ofstream out("innerCode.txt");
-
     cout << "\n===============INNERCODE===============" << endl;
     for (string s : codeList) {
         cout << s << endl;
