@@ -27,7 +27,8 @@ FS			(f|F|l|L)
 IS          ((u|U)|(u|U)?(l|L|ll|LL)|(l|L|ll|LL)(u|U))
 
 %%
-
+\/\/[^\n]*   {printf("comment");}
+"/*"([^\*]|(\*)*[^\*/])*(\*)*"*/"   {}
 "/*"			{ comment();/*注释*/}
 "//"[^\n]*      { /* consume //-comment */ }
 

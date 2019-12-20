@@ -140,6 +140,20 @@ def translate(line):
                                                           Get_R("temp*"), Get_R(line[1]))
         else:
             return '\tdiv %s,%s,%s' % (Get_R(line[3]), Get_R(line[1]), Get_R(line[2]))
+
+    elif line[0] == '%':
+        if "*" in line[1]:
+            return '\tlw {},0({})\n\tdiv {},{}\n\tmfhi {}'.format(Get_R("temp*"), Get_R(line[1].replace("*", "")),
+                                                          Get_R(line[2]),
+                                                          Get_R("temp*"), Get_R(line[3]))
+        elif "*" in line[2]:
+            return '\tlw {},0({})\n\tdiv {},{}\n\tmfhi {}'.format(Get_R("temp*"), Get_R(line[2].replace("*", "")),
+                                                          Get_R(line[1]),
+                                                          Get_R("temp*"), Get_R(line[3]))
+        else:
+            return '\tdiv %s,%s\n\tmfhi %s' % (Get_R(line[1]), Get_R(line[2]),Get_R(line[3]))
+
+
     # slt $1,$2,$3 if($2<$3)   $1=1 else $1=0
     elif line[0] == '<':
         if "*" in line[1]:
@@ -192,6 +206,8 @@ def translate(line):
     elif line[0] == '||' and line[3][0] == 'l':
         return '\tadd {4},{1},{0}\n\tli {3},0\n\tbgt {4},{3},{2}'.format(Get_R(line[1]), Get_R(line[2]), line[3],
                                                                          Get_R("0"), Get_R("tempor"))
+    elif line[0] == '!':
+        return '\tnot %s %s' % (Get_R(line[3]), Get_R(line[0]))
 
     if line[0] == 'CALL' and line[3] != '_':  # 函数调用并赋给变量
         res = ''

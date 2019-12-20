@@ -1,15 +1,30 @@
+//错误检查
+void func(int a){
+  
+}
 int main()
 {
-	int a[10];
-	int b[5];
-	a[2]=5;
-	b[3]=10;
-	int c=a[2]+3;
-	int d=b[3]-1;
-	if(c<d)
-	{
-		print(1);
-	}
-	
-	return 0;
+// 变量未定义
+// a = 1;
+
+// 变量重复定义
+// int a = 1;
+// int a = 2;
+
+/*类型检查*/
+// 类型错误
+// int c = 1.2;
+
+// 数组size必须是int
+// int a[1.2];
+
+// int + double
+// int a = 1 + 1.2;
+
+// // 函数参数个数不匹配
+// int b = 1;
+// int c = 2;
+// func(b, c);
+
+
 }

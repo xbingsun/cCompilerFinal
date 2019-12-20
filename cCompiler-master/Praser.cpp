@@ -164,7 +164,7 @@ void Praser::praser_selection_statement(struct gramTree* node) {
                 varNode newznode = createTempVar(tempzeroname, "int");
                 innerCode.addCode("(=, #0, _, "+tempzeroname+")");//"(=, #0, _, "+tempzeroname+")"
 
-                innerCode.addCode("(j!=, " + innerCode.getNodeName(exp_rnode) + " , " + tempzeroname + ", " + label1+")");
+                innerCode.addCode("(j!=, " + innerCode.getNodeName(exp_rnode) + ", " + tempzeroname + ", " + label1+")");
             }
             
             innerCode.addCode("(j, _, _, " + label2 + ")");//"(j, _, _," + label2 + ")"
@@ -1338,8 +1338,28 @@ varNode Praser::praser_unary_expression(struct gramTree*unary_exp) {
 
     }
     else if (op == "!") {
-
-
+        if (rnode.type != "int" && rnode.type != "double" && rnode.type != "bool")
+        error(unary_exp->left->left->line, "operator '-' can only used to int or double");
+        string tempname = "temp" + inttostr(innerCode.tempNum);
+        ++innerCode.tempNum;
+        varNode newnode = createTempVar(tempname, rnode.type);
+        blockStack.back().varMap.insert({ tempname,newnode });
+        if (rnode.useAddress) {
+            //innerCode.addCode(tempname + " := " + tempzeroname + " - *" + rnode.name);
+            innerCode.addCode("(!, *" + rnode.name + ", _, " + tempname + ")" );
+        }
+        else {
+            cout<<rnode.num<<endl;
+            if(rnode.num != 0) {
+                innerCode.addCode("(=, #0, _, " + tempname + ")" );
+            }
+            else {
+                innerCode.addCode("(=, #1, _, " + tempname + ")" );
+            }
+            //innerCode.addCode(tempname + " := " + tempzeroname + " - " + innerCode.getNodeName(rnode));
+            // innerCode.addCode("(!, " + innerCode.getNodeName(rnode) + ", _, " + tempname + ")" );
+        }
+        return newnode;
     }
   }
 }

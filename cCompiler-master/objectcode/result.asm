@@ -4,7 +4,6 @@ _prompt: .asciiz "Enter an integer:"
 _ret: .asciiz "\n"
 .align 2
 array0:.space 1024
-array1:.space 1024
 
 .globl main
 .text
@@ -28,63 +27,60 @@ print:
     move $v0,$0
     jr $ra
 main:
-	li $t1,10
-	li $t2,4
-	mul $t3,$t2,$t1
-	la $t1,array0
-
-	li $t2,5
-	li $t4,4
-	mul $t5,$t4,$t2
-	la $t1,array0
-	la $t2,array1
-
-	li $t4,2
-	li $t6,4
-	mul $t7,$t4,$t6
-	add $t4,$t1,$t7
-
-	li $t6,5
-	sw $t6 0($t4)
-
-	li $t4,3
-	li $t6,4
-	mul $t7,$t4,$t6
-	add $t4,$t2,$t7
-
-	li $t6,10
-	sw $t6 0($t4)
-
-	li $t4,2
-	li $t6,4
-	mul $t7,$t4,$t6
-	add $t4,$t1,$t7
-
-	li $t6,3
-	lw $t7,0($t4)
-	add $t4,$t7,$t6
-	move $t6,$t4
-	li $t4,3
-	li $t7,4
-	mul $t8,$t4,$t7
-	add $t4,$t2,$t8
-
-	li $t7,1
-	lw $t8,0($t4)
-	sub $t4,$t8,$t7
-	move $t7,$t4
-	blt $t6,$t7,label0
+	li $t1,1
+	move $t2,$t1
+	li $t1,0
+	beq $t2,$t1,label0
 	j label1
 label0:
-	li $t4,1
+	li $t1,1
 	move $t0,$a0
-	move $a0,$t4
+	move $a0,$t1
 	addi $sp,$sp,-4
 	sw $ra,0($sp)
 	jal print
 	lw $ra,0($sp)
 	addi $sp,$sp,4
+	j label2
 label1:
-	li $t4,0
-	move $v0,$t4
+	li $t1,2
+	move $t0,$a0
+	move $a0,$t1
+	addi $sp,$sp,-4
+	sw $ra,0($sp)
+	jal print
+	lw $ra,0($sp)
+	addi $sp,$sp,4
+label2:
+	li $t1,10
+	li $t3,4
+	mul $t4,$t3,$t1
+	la $t1,array0
+
+	li $t3,2
+	li $t5,4
+	mul $t6,$t3,$t5
+	add $t3,$t1,$t6
+
+	li $t5,5
+	sw $t5 0($t3)
+
+	li $t3,2
+	li $t5,4
+	mul $t6,$t3,$t5
+	add $t3,$t1,$t6
+
+	li $t5,3
+	lw $t6,0($t3)
+	add $t3,$t6,$t5
+	move $t5,$t3
+	move $t0,$a0
+	move $a0,$t5
+	addi $sp,$sp,-4
+	sw $ra,0($sp)
+	jal print
+	lw $ra,0($sp)
+	addi $sp,$sp,4
+	li $t3,0
+	move $v0,$t3
 	jr $ra
