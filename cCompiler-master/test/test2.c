@@ -1,7 +1,7 @@
 //错误检查
-void func(int a){
+// void func(int a){
   
-}
+// }
 int main()
 {
 // 变量未定义
@@ -16,7 +16,7 @@ int main()
 // int c = 1.2;
 
 // 数组size必须是int
-// int a[1.2];
+int a[1.2];
 
 // int + double
 // int a = 1 + 1.2;
